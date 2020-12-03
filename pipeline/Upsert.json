@@ -20,7 +20,7 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"ReadInvoices": {
-								"FileName": "Invoices2.csv"
+								"FileName": "Invoices3.csv"
 							}
 						}
 					},
