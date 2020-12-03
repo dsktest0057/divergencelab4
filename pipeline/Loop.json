@@ -196,6 +196,30 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "SendEmail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-14.southcentralus.logic.azure.com:443/workflows/8ef678f610634c30b15ce1441f60c37f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a7l7bNzIzte40Qc-zlSxnBod9yGE1kMqNBuJWQfnL8g",
+					"method": "POST"
+				}
 			}
 		],
 		"annotations": []
