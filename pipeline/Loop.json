@@ -220,7 +220,7 @@
 					"url": "https://prod-14.southcentralus.logic.azure.com:443/workflows/8ef678f610634c30b15ce1441f60c37f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a7l7bNzIzte40Qc-zlSxnBod9yGE1kMqNBuJWQfnL8g",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"recipient\": \"dskafle@outlook.com\",\n\"run_id\": \"@{pipeline().RunId}\",\n\"trigger_time\": \"@{pipeline().TriggerTime}\",\n\"df_name\": \"{@pipeline().DataFactory}\"\n}",
+						"value": "{\n\"recipient\": \"dskafle@outlook.com\",\n\"run_id\": \"@{pipeline().RunId}\",\n\"trigger_time\": \"@{pipeline().TriggerTime}\",\n\"df_name\": \"@{pipeline().DataFactory}\"\n}",
 						"type": "Expression"
 					}
 				}
