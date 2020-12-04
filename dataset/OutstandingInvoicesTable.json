@@ -1,0 +1,16 @@
+{
+	"name": "OutstandingInvoicesTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "InvoicesDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "OutstandingInvoices"
+		}
+	}
+}
