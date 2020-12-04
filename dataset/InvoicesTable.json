@@ -7,7 +7,48 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "InvoiceID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VendorID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InvoiceNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InvoiceDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InvoiceTotal",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PaymentTotal",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreditTotal",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TermsID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InvoiceDueDate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PaymentDate",
+				"type": "nvarchar"
+			}
+		],
 		"typeProperties": {
 			"schema": "dbo",
 			"table": "Invoices"
