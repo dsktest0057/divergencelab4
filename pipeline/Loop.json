@@ -23,7 +23,8 @@
 						"childItems"
 					],
 					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings"
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
@@ -198,8 +199,8 @@
 				}
 			},
 			{
-				"name": "SendEmail",
-				"type": "WebActivity",
+				"name": "BatchSendEmail",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -208,24 +209,47 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-14.southcentralus.logic.azure.com:443/workflows/8ef678f610634c30b15ce1441f60c37f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a7l7bNzIzte40Qc-zlSxnBod9yGE1kMqNBuJWQfnL8g",
-					"method": "POST",
-					"body": {
-						"value": "{\n\"recipient\": \"dskafle@outlook.com\",\n\"run_id\": \"@{pipeline().RunId}\",\n\"trigger_time\": \"@{pipeline().TriggerTime}\",\n\"df_name\": \"@{pipeline().DataFactory}\"\n}",
+					"items": {
+						"value": "@pipeline().parameters.recipient_list",
 						"type": "Expression"
-					}
+					},
+					"activities": [
+						{
+							"name": "SendEmail",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-14.southcentralus.logic.azure.com:443/workflows/8ef678f610634c30b15ce1441f60c37f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a7l7bNzIzte40Qc-zlSxnBod9yGE1kMqNBuJWQfnL8g",
+								"method": "POST",
+								"body": {
+									"value": "{\n\"recipient\": \"@{item()}\",\n\"run_id\": \"@{pipeline().RunId}\",\n\"trigger_time\": \"@{pipeline().TriggerTime}\",\n\"df_name\": \"@{pipeline().DataFactory}\"\n}",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
+		"parameters": {
+			"recipient_list": {
+				"type": "array",
+				"defaultValue": [
+					"dskafle@outlook.com",
+					"de_ep1@hotmail.com"
+				]
+			}
+		},
 		"annotations": []
 	}
 }
