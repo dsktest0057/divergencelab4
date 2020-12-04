@@ -10,6 +10,14 @@
 		},
 		"InvoicesDB_connectionString": {
 			"value": ""
+		},
+		"WhenInputFileArrives_properties_Loop_parameters_recipient_list": {
+			"value": [
+				"dskafle@outlook.com"
+			]
+		},
+		"WhenInputFileArrives_properties_typeProperties_scope": {
+			"value": "/subscriptions/5a5dcbe9-ce54-48f3-bb38-9b911dde6dc1/resourceGroups/dk_rgdivergencelab4/providers/Microsoft.Storage/storageAccounts/dksadivergencelab4"
 		}
 	}
 }

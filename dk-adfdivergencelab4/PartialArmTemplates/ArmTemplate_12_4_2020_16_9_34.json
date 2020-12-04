@@ -6,24 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "dk-adfdivergencelab4"
-		},
-		"InvoicesBlob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'InvoicesBlob'"
-		},
-		"InvoicesDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'InvoicesDB'"
-		},
-		"WhenInputFileArrives_properties_Loop_parameters_recipient_list": {
-			"type": "array",
-			"defaultValue": [
-				"dskafle@outlook.com"
-			]
-		},
-		"WhenInputFileArrives_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/5a5dcbe9-ce54-48f3-bb38-9b911dde6dc1/resourceGroups/dk_rgdivergencelab4/providers/Microsoft.Storage/storageAccounts/dksadivergencelab4"
 		}
 	},
 	"variables": {
@@ -51,8 +33,7 @@
 						"typeProperties": {
 							"dataset": {
 								"referenceName": "InvoicesInputFolder",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							},
 							"fieldList": [
 								"childItems"
@@ -101,18 +82,15 @@
 										"dataflow": {
 											"referenceName": "UpsertDataFlow",
 											"type": "DataFlowReference",
-											"parameters": {},
 											"datasetParameters": {
 												"ReadInvoices": {
 													"FileName": {
 														"value": "@item().name",
 														"type": "Expression"
 													}
-												},
-												"WriteInvoiceData": {}
+												}
 											}
 										},
-										"staging": {},
 										"compute": {
 											"coreCount": 8,
 											"computeType": "General"
@@ -269,7 +247,6 @@
 									"typeProperties": {
 										"url": "https://prod-14.southcentralus.logic.azure.com:443/workflows/8ef678f610634c30b15ce1441f60c37f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a7l7bNzIzte40Qc-zlSxnBod9yGE1kMqNBuJWQfnL8g",
 										"method": "POST",
-										"headers": {},
 										"body": {
 											"value": "{\n\"recipient\": \"@{item()}\",\n\"run_id\": \"@{pipeline().RunId}\",\n\"trigger_time\": \"@{pipeline().TriggerTime}\",\n\"df_name\": \"@{pipeline().DataFactory}\"\n}",
 											"type": "Expression"
@@ -301,15 +278,8 @@
 						"typeProperties": {
 							"dataflow": {
 								"referenceName": "RefreshReporting",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"ReadInvoices": {},
-									"sink1": {},
-									"sink2": {}
-								}
+								"type": "DataFlowReference"
 							},
-							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -359,15 +329,12 @@
 							"dataflow": {
 								"referenceName": "UpsertDataFlow",
 								"type": "DataFlowReference",
-								"parameters": {},
 								"datasetParameters": {
 									"ReadInvoices": {
 										"FileName": "Invoices3.csv"
-									},
-									"WriteInvoiceData": {}
+									}
 								}
 							},
-							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -414,9 +381,7 @@
 				},
 				"schema": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DynamicInvoiceCSV')]",
@@ -491,136 +456,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Invoice1CS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "InvoicesBlob",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Invoices1.csv",
-						"container": "input"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "InvoiceID",
-						"type": "String"
-					},
-					{
-						"name": "VendorID",
-						"type": "String"
-					},
-					{
-						"name": "InvoiceNumber",
-						"type": "String"
-					},
-					{
-						"name": "InvoiceDate",
-						"type": "String"
-					},
-					{
-						"name": "InvoiceTotal",
-						"type": "String"
-					},
-					{
-						"name": "PaymentTotal",
-						"type": "String"
-					},
-					{
-						"name": "CreditTotal",
-						"type": "String"
-					},
-					{
-						"name": "TermsID",
-						"type": "String"
-					},
-					{
-						"name": "InvoiceDueDate",
-						"type": "String"
-					},
-					{
-						"name": "PaymentDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Invoice1CSV')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "InvoicesBlob",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Invoices1.csv",
-						"container": "input"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Invoice2CSV')]",
@@ -687,9 +523,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Invoice3CSV')]",
@@ -756,9 +590,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/InvoicesInputFolder')]",
@@ -824,9 +656,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/InvoicesTable')]",
@@ -884,34 +714,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "Invoices"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InvoicesBlob')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('InvoicesBlob_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InvoicesDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('InvoicesDB_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -1032,9 +834,7 @@
 					"table": "OutstandingInvoices"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/VendorBalancesDescendingTable')]",
@@ -1053,9 +853,7 @@
 					"table": "VendorBalancesDescending"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/InvoicesDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/WhenInputFileArrives')]",
@@ -1071,7 +869,9 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"recipient_list": "[parameters('WhenInputFileArrives_properties_Loop_parameters_recipient_list')]"
+							"recipient_list": [
+								"dskafle@outlook.com"
+							]
 						}
 					}
 				],
@@ -1080,7 +880,7 @@
 					"blobPathBeginsWith": "/input/blobs/",
 					"blobPathEndsWith": ".csv",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('WhenInputFileArrives_properties_typeProperties_scope')]",
+					"scope": "/subscriptions/5a5dcbe9-ce54-48f3-bb38-9b911dde6dc1/resourceGroups/dk_rgdivergencelab4/providers/Microsoft.Storage/storageAccounts/dksadivergencelab4",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
